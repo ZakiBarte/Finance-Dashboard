@@ -32,8 +32,8 @@ const financeSchema = new mongoose.Schema({
 
 const Finance = mongoose.model("Finance", financeSchema);
 
-app.get("/finance", async(req, res) => {
-  const finances =  await Finance.find();
+app.get("/finance", async (req, res) => {
+  const finances = await Finance.find();
 
   if (!finances) {
     res.json({ error: "there is no data stored" });
@@ -42,46 +42,36 @@ app.get("/finance", async(req, res) => {
 });
 
 app.post("/finance", async (req, res) => {
-  
-
-const {title, price} = req.body
+  const { title, price } = req.body;
   try {
-    const existing = await Finance.findOne({title})
-    if(existing){
-      existing.price = +Number(price)
-      await existing.save()
-      return res.json(existing)
+    const existing = await Finance.findOne({ title });
+    if (existing) {
+      existing.price = +Number(price);
+      await existing.save();
+      return res.json(existing);
     }
-    
+
     const finance = req.body;
     const newFinance = new Finance(finance);
     await newFinance.save();
     res.json(newFinance);
-  
   } catch (error) {
     res.json({ error });
   }
-
 });
 
 app.delete("/finance/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedFinance = Finance.findByIdAndDelete(id);
+    const deletedFinance = await Finance.findByIdAndDelete(id);
+    console.log(deletedFinance);
+
     res.json(deletedFinance);
   } catch (error) {
     console.error(error);
   }
 });
-
-
-
-
-
-
-
-
 
 async function startServer() {
   try {

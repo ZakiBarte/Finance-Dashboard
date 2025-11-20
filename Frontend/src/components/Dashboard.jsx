@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 function Dashboard() {
   const [finances, setFinances] = useState([]);
-  const [sendingReqFinance, setSendingReqFinance] = useState({ title: "", price: "" });
-  
+  const [sendingReqFinance, setSendingReqFinance] = useState({
+    title: "",
+    price: "",
+  });
+  const [Loading, setLoading] = useState(false);
+
   //? Get All finances
   const fetchFinances = async () => {
     try {
@@ -10,13 +14,13 @@ function Dashboard() {
       const data = await responce.json();
       setFinances(data);
     } catch (error) {
-       console.error("Fetch error:", error);
+      console.error("Fetch error:", error);
     }
   };
 
-  //?  POST a new finance item 
+  //?  POST a new finance item
   const sendFinances = async (e) => {
-     e.preventDefault();
+    e.preventDefault();
     try {
       const responce = await fetch("http://localhost:9000/finance", {
         method: "POST",
@@ -24,70 +28,86 @@ function Dashboard() {
         body: JSON.stringify(sendingReqFinance),
       });
       const data = await responce.json();
-      if(finances === data){
-        
-      }
-      setFinances([data, ...finances]);   //* add new item to UI instantly
+      // if(finances === data){
 
-          //? reset inputs
-        setSendingReqFinance({ title: "", price: "" });  //! this is from Ai
+      // }
+      setFinances([data, ...finances]); //* add new item to UI instantly
 
+      //? reset inputs
+      setSendingReqFinance({ title: "", price: "" }); //! this is from Ai
     } catch (error) {
-        console.error(error);
-        
+      console.error(error);
     }
   };
 
   //?  DELETE finance item
   const deleteFinances = async (id) => {
     try {
-      const responce = await fetch(`http://localhost:9000/finance/delete/${id}`, {
-        method: "DELETE",
-        // headers: { "Content-Type": "application/json" },  //!  Ai  removed this.. why!?
-      });
+      const responce = await fetch(
+        `http://localhost:9000/finance/delete/${id}`,
+        {
+          method: "DELETE",
+          // headers: { "Content-Type": "application/json" },  //!  Ai  removed this.. why!?
+        }
+      );
 
+      // remove from UI
+      //  console.log(data);
 
-       // remove from UI
-       setFinances(finances.filter((f) => f._id !== id)); //! from Ai
-
-      // const data =  await responce.json();  //!  Ai  removed this.. why!?
+      setFinances(finances.filter((f) => f._id !== id)); //! from Ai
+      //  const data =  await responce.json();  //!  Ai  removed this.. why!?
     } catch (error) {
       console.error("DELETE error:", error);
     }
   };
 
-   const handleChange = (e) => {
+  const handleChange = (e) => {
     setSendingReqFinance({
       ...sendingReqFinance,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   //?   Load data on first render
-  useEffect(()=>{
-    fetchFinances()
-  },[])
+  useEffect(() => {
+    fetchFinances();
+    setLoading(false);
+  }, []);
 
-  return(
+  return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center pt-10 text-gray-200">
-       <h1 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-2">
+      <h1 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-2">
         <span>💰</span> Finance Dashboard
       </h1>
-        <form action="" onSubmit={sendFinances}
-         className="bg-gray-800 p-6 rounded-lg shadow-md w-96 flex flex-col gap-4"
-        >
-            <input type="text"  placeholder="Expence Items" name="title" value={sendingReqFinance.title} onChange={handleChange}
-             className="p-2 rounded-md border border-gray-700 focus:outline-none focus:border-yellow-400 bg-gray-900"
-            />
-            <input type="number"  placeholder="Amount" name="price" value={sendingReqFinance.price} onChange={handleChange}
-             className="p-2 rounded-md border border-gray-700 focus:outline-none focus:border-yellow-400 bg-gray-900"
-            />
-       <button type="submit"
-        className="bg-gray-700 hover:bg-yellow-400 text-gray-200 hover:text-gray-900 py-2 rounded-md transition-colors"
-       > Submit</button>
-        </form>
-        <h2>Submitted Finances:</h2>
-  <table className="mt-10 w-96 text-left border-collapse">
+      <form
+        action=""
+        onSubmit={sendFinances}
+        className="bg-gray-800 p-6 rounded-lg shadow-md w-96 flex flex-col gap-4">
+        <input
+          type="text"
+          placeholder="Expence Items"
+          name="title"
+          value={sendingReqFinance.title}
+          onChange={handleChange}
+          className="p-2 rounded-md border border-gray-700 focus:outline-none focus:border-yellow-400 bg-gray-900"
+        />
+        <input
+          type="number"
+          placeholder="Amount"
+          name="price"
+          value={sendingReqFinance.price}
+          onChange={handleChange}
+          className="p-2 rounded-md border border-gray-700 focus:outline-none focus:border-yellow-400 bg-gray-900"
+        />
+        <button
+          type="submit"
+          className="bg-gray-700 hover:bg-yellow-400 text-gray-200 hover:text-gray-900 py-2 rounded-md transition-colors">
+          {" "}
+          {Loading ? "Loading" : "submit"}{" "}
+        </button>
+      </form>
+      <h2>Submitted Finances:</h2>
+      <table className="mt-10 w-96 text-left border-collapse">
         <thead className="bg-gray-800 rounded-t-md">
           <tr>
             <th className="px-4 py-2 text-yellow-400">Title</th>
@@ -100,15 +120,19 @@ function Dashboard() {
             <tr key={idx} className="border-t border-gray-700">
               <td className="px-4 py-2">{item.title}</td>
               <td className="px-4 py-2 text-green-400">${item.price}</td>
-              <td className="px-4 py-2 text-red-500 cursor-pointer">🗑️
-              <button onClick={deleteFinances}></button>
+              <td className="px-4 py-2 text-red-500 ">
+                <button
+                  onClick={() => deleteFinances(item._id)}
+                  className="cursor-pointer">
+                  🗑️
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
+  );
 }
 
 export default Dashboard;
