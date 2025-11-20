@@ -53,7 +53,6 @@ function Dashboard() {
       // const data =  await responce.json();  //!  Ai  removed this.. why!?
     } catch (error) {
       console.error("DELETE error:", error);
-      
     }
   };
 
