@@ -75,6 +75,14 @@ app.delete("/finance/delete/:id", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
 async function startServer() {
   try {
     await connectMongoDB();
