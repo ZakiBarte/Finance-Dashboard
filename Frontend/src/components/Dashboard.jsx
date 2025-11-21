@@ -136,7 +136,7 @@ function Dashboard() {
     }, []);
 
     return (
-      <div className="min-h-screen bg-gray-900 flex flex-col items-center pt-10 text-gray-200">
+      <div className="min-h-screen bg-gray-900 flex flex-col items-center pt-10 text-gray-200" >
         <h1 className="text-2xl font-bold text-yellow-400 mb-6 flex items-center gap-2">
           <span>💰</span> Finance Dashboard
         </h1>

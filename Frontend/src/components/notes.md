@@ -214,7 +214,9 @@ const handleEdit = (item) => {
 
 ---
 
-# If you want, I can now give you the **FULL final component**:
+
+# if you understand the above lines you can mike it full component
+**FULL final component**:
 
 * Add mode
 * Edit mode
@@ -223,4 +225,4 @@ const handleEdit = (item) => {
 * Tailwind UI
 * Loading states
 
-All in **one clean file**.
+
