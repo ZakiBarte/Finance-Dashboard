@@ -12,7 +12,7 @@ function Dashboard() {
   //? Get All finances
   const fetchFinances = async () => {
     try {
-      setLoading(true)
+      
       const responce = await fetch("http://localhost:9000/finance");
       const data = await responce.json();
       setFinances(data);
@@ -34,12 +34,13 @@ function Dashboard() {
       });
       const data = await responce.json();
       // if(finances === data){
-
       // }
       setFinances([data, ...finances]); //* add new item to UI instantly
 
       //? reset inputs
       setSendingReqFinance({ title: "", price: "" }); //! this is from Ai
+
+      setLoading(false)
     } catch (error) {
       console.error(error);
     }
@@ -112,7 +113,7 @@ function Dashboard() {
         `} 
           disabled={isDisabled}
           >
-          {Loading ? "Loading" : "submit"}{" "}
+          {Loading ? "Loading" : "submit"}
         </button>
       </form>
       <h2>Submitted Finances:</h2>
