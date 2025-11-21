@@ -7,9 +7,12 @@ function Dashboard() {
   });
   const [Loading, setLoading] = useState(false);
 
+  const isDisabled = !sendingReqFinance.title.trim() || !sendingReqFinance.price.trim()
+
   //? Get All finances
   const fetchFinances = async () => {
     try {
+      setLoading(true)
       const responce = await fetch("http://localhost:9000/finance");
       const data = await responce.json();
       setFinances(data);
@@ -17,11 +20,13 @@ function Dashboard() {
       console.error("Fetch error:", error);
     }
   };
+  
 
   //?  POST a new finance item
   const sendFinances = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const responce = await fetch("http://localhost:9000/finance", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,8 +106,12 @@ function Dashboard() {
         />
         <button
           type="submit"
-          className="bg-gray-700 hover:bg-yellow-400 text-gray-200 hover:text-gray-900 py-2 rounded-md transition-colors">
-          {" "}
+          // className=""
+          className={`mt-4 px-4 py-2 rounded 
+          ${isDisabled ? "bg-gray-900 hover:bg-gray-700 text-gray-200 hover:text-gray-900 py-2 rounded-md transition-colors cursor-not-allowed" : "bg-gray-700 hover:bg-yellow-400 text-gray-200 hover:text-gray-900 py-2 rounded-md transition-colors"}
+        `} 
+          disabled={isDisabled}
+          >
           {Loading ? "Loading" : "submit"}{" "}
         </button>
       </form>
