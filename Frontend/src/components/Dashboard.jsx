@@ -1,4 +1,3 @@
-import { Eraser } from "lucide";
 import { useEffect, useState } from "react";
 function Dashboard() {
   const [finances, setFinances] = useState([]);
@@ -50,7 +49,7 @@ function Dashboard() {
   //?  DELETE finance item
   const deleteFinances = async (id) => {
     try {
-      const responce = await fetch(
+      await fetch(
         `http://localhost:9000/finance/delete/${id}`,
         {
           method: "DELETE",
@@ -69,7 +68,7 @@ function Dashboard() {
   };
 
   //?  Updating finance item
-  const updatingData = async () => {
+  const updatingData = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {

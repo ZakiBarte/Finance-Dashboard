@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
-const dotenv = require("dotenv").config(); // load environment variables
+require("dotenv").config(); // load environment variables
 const PORT = process.env.PORT || 9000;
 app.use(express.json());
 app.use(cors());
@@ -80,7 +80,7 @@ app.put("/finance/editingId/:id",async(req, res)=>{
   try {
     const {id}  = req.params
     const data = req.body
-    const editedID = await Finance.findByIdAndUpdate(id, data, {new: true})
+    const editedID = await Finance.findByIdAndUpdate(id, data, {new: false})
     console.log(editedID)
 
     res.json(editedID)
