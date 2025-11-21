@@ -2,12 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
-const PORT = 9000;
+const dotenv = require("dotenv").config(); // load environment variables
+const PORT = process.env.PORT || 9000;
 app.use(express.json());
 app.use(cors());
 
-const mongo_URL =
-  "mongodb+srv://zakibarte1_db_user:i5bXHERrVkfb5WI6@cluster0.r1xg9ip.mongodb.net/Finance?appName=Cluster0";
+
+const mongo_URL =process.env.MONGO_URL;
+  
 
 // MongoDB connection
 async function connectMongoDB() {
