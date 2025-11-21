@@ -65,13 +65,31 @@ app.delete("/finance/delete/:id", async (req, res) => {
     const { id } = req.params;
 
     const deletedFinance = await Finance.findByIdAndDelete(id);
-    console.log(deletedFinance);
+    // console.log(deletedFinance);
 
     res.json(deletedFinance);
   } catch (error) {
     console.error(error);
   }
 });
+
+
+app.put("/finance/editingId/:id",async(req, res)=>{
+  try {
+    const {id}  = req.params
+    const data = req.body
+    const editedID = await Finance.findByIdAndUpdate(id, data, {new: true})
+    console.log(editedID)
+
+    res.json(editedID)
+  } catch (error) {
+    console.error(error);
+     res.status(500).json({ error: "Update failed" }); 
+  }
+  
+})
+
+
 
 async function startServer() {
   try {
