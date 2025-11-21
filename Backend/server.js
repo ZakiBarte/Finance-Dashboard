@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 
-const mongo_URL =process.env.MONGO_URL;
+const mongo_URL = process.env.MONGO_URL;
   
 
 // MongoDB connection
