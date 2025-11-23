@@ -114,6 +114,7 @@ function Dashboard() {
 
   //? handleEdit receives the whole item, not (e)
   const handleEdit = (item) => {
+    id
     setEditingId(item._id);
 
     //? Load the current values into the inputs
